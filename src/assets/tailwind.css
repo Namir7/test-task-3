@@ -9,6 +9,13 @@
   button {
     @apply outline-none;
   }
+
+  button,
+  input[type="submit"],
+  label,
+  a {
+    @apply cursor-pointer;
+  }
 }
 
 @layer components {

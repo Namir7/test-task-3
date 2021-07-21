@@ -11,16 +11,29 @@
       </p>
       <label class="block mb-2 font-medium" for="salary">your salary</label>
       <input
-        class="block mb-2"
+        class="block mb-2 w-full py-2 pl-3 border border-gray-400"
         placeholder="input data"
         type="text"
         id="salary"
       />
-      <button class="block mb-6 text-red-600 font-medium">Calculate</button>
+      <button
+        class="block mb-6 text-red-600 font-medium"
+        @click="handleCalculateClick"
+      >
+        Calculate
+      </button>
       <div class="mb-10">
         <p class="inline-block mb-6 mr-12 font-medium">What are we reducing?</p>
         <template v-for="reducingValue in ReducingValue" :key="reducingValue">
-          <label class="mr-1" :for="reducingValue">
+          <label
+            class="mr-1 py-4 px-2 rounded-3xl bg-gray-100"
+            :class="
+              reducingValue === formData.reducingValue
+                ? 'text-white bg-red-500'
+                : ''
+            "
+            :for="reducingValue"
+          >
             {{
               reducingValue.charAt(0).toUpperCase() +
               reducingValue.slice(1).toLowerCase()
@@ -31,8 +44,6 @@
             type="radio"
             name="reducing"
             :id="reducingValue"
-            :value="reducingValue"
-            v-model="formData.reducingValue"
           />
         </template>
       </div>
@@ -47,20 +58,29 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
+import { formatSalary, formatSalaryViseVerse } from "../utils";
 
 export default defineComponent({
   name: "Popup",
   emits: ["closePopup"],
   setup() {
-    type Salary = string;
+    type SalaryValue = number;
 
     enum ReducingValue {
       payment = "PAYMENT",
       duration = "DURATION",
     }
 
+    enum Currency {
+      rub = "₽",
+      dollars = "$",
+    }
+
     const formData = reactive({
-      salary: "" as Salary,
+      salary: {
+        value: 50000 as SalaryValue,
+        currency: Currency.rub,
+      },
       reducingValue: ReducingValue.payment,
     });
 
@@ -69,10 +89,23 @@ export default defineComponent({
       ReducingValue,
     };
   },
-
+  computed: {
+    salaryValue(): string {
+      return formatSalary(this.formData.salary);
+    },
+  },
   methods: {
-    resolveSubmit() {
+    resolveSubmit(): void {
       console.log("submit");
+    },
+    handleCalculateClick(): void {
+      console.log("calculated");
+    },
+
+    handleSalaryInput(event: InputEvent) {
+      const target = event.target as HTMLInputElement;
+      const value = target.value;
+      this.formData.salary.value = formatSalaryViseVerse(value);
     },
   },
 });

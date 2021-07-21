@@ -14,9 +14,11 @@
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9",
+    "core-js": "^3.6.5",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-    "core-js": "^3.6.5",
+    "text-mask-addons": "^3.8.0",
+    "v-mask": "^2.2.4",
     "vue": "^3.0.0",
     "vuex": "^4.0.0-0"
   },
